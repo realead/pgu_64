@@ -3,21 +3,43 @@
 # $2 - variant (optional, default '')
 
 ARCH=${1:-"64"}
+VARIANT=$2
+DIR="records"
+
+#first parameter - target
+#second parameter - source files
+build_target(){
+    if [ $ARCH = "32" ] ; then
+        LD_FLAG="-melf_i386"
+    else
+        LD_FLAG="-melf_x86_64"
+    fi
+    TARGET="$DIR/$1$ARCH$VARIANT"
+    OBJECTS=""
+    for name in $2 
+    do
+         SRC="$DIR/$name$ARCH$VARIANT.s"
+         OBJ="$DIR/$name$ARCH$VARIANT.o"
+         OBJECTS="$OBJECTS $OBJ"
+         as -I records --$ARCH  $SRC -o $OBJ
+    done
+    ld $LD_FLAG $OBJECTS -o $TARGET
+}
 
 ########### BUILD ####################:
 
-if [ $ARCH = "32" ] ; then
-    LD_FLAG="-melf_i386"
-else
-    LD_FLAG="-melf_x86_64"
-fi    
+    
 
-TARGET="records/write_records$ARCH"
-FILE1=$TARGET
-FILE2="records/write_record$ARCH"
- 
-as -I records --$ARCH  "$FILE1.s" -o "$FILE1.o"
-as -I records --$ARCH  "$FILE2.s" -o "$FILE2.o"
-ld $LD_FLAG "$FILE1.o"  "$FILE2.o" -o $TARGET
+
+#write_records:
+echo "building target <write_records>..."
+FILES_WRITE="write_record write_records"
+build_target write_records "$FILES_WRITE"
+
+#read_records:
+echo "building target <read_records>..."
+FILES_READ="count_chars read_record write_newline read_records"
+build_target read_records "$FILES_READ"
+
 
 

@@ -6,10 +6,17 @@ ARCH=${1:-"64"}
 
 ########### BUILD ####################:
   
-
-TARGET="records/write_records$ARCH"
+DIR=records
+TARGET1="$DIR/write_records$ARCH$2"
+TARGET2="$DIR/write_records$ARCH$2"
  
 rm records/*.o
-rm $TARGET
+
+TARGETS="write_records read_records"
+
+for target in $TARGETS
+do
+    rm "$DIR/$target$ARCH$2"
+done
 
 
