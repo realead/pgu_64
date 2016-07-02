@@ -6,8 +6,11 @@
 
 
 ########## ANALISE OPTIONS ###############:
+# $1 - name of the example
+# $2 - architecture (optional, default 64)
+# $3 - variant (optional, default '')
 ARCH=${2:-"64"}
-TARGET=$1/$1$ARCH
+TARGET=$1/$1$ARCH$3
 SOURCE=$TARGET.s
 OBJECT=$TARGET.o
 
