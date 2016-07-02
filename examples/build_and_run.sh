@@ -15,23 +15,29 @@ SOURCE=$TARGET.s
 OBJECT=$TARGET.o
 
 RUN_SCRIPT="$1/run.sh"
+BUILD_SCRIPT="$1/build.sh"
+CLEAN_SCRIPT="$1/clean.sh"
 
    
 ########### BUILD ####################:
 
-#as in the book:
-if [ $ARCH = "32" ] ; then
-    LD_FLAG="-melf_i386"
+if [ -e  $BUILD_SCRIPT ] ; then
+    sh $BUILD_SCRIPT $ARCH $3
 else
-    LD_FLAG="-melf_x86_64"
-fi    
- 
-as --$ARCH $SOURCE -o $OBJECT
-ld $LD_FLAG $OBJECT -o $TARGET
+    #as in the book:
+    if [ $ARCH = "32" ] ; then
+        LD_FLAG="-melf_i386"
+    else
+        LD_FLAG="-melf_x86_64"
+    fi    
+     
+    as --$ARCH $SOURCE -o $OBJECT
+    ld $LD_FLAG $OBJECT -o $TARGET
 
-    
-# another possibility:
-#gcc -nostdlib -m$ARCH $SOURCE -o $TARGET 
+        
+    # another possibility:
+    #gcc -nostdlib -m$ARCH $SOURCE -o $TARGET 
+fi
 
 
 ############ RUN ###################:
@@ -44,6 +50,11 @@ fi
 
 
 ############## CLEAN UP ########################:
-rm $OBJECT
-rm $TARGET
+if [ -e  $CLEAN_SCRIPT ] ; then
+    sh $CLEAN_SCRIPT $ARCH $3
+else
+    rm $OBJECT
+    rm $TARGET
+fi
+
 
