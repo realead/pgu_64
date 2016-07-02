@@ -15,8 +15,9 @@ $EXE
 
 echo "$EXE run and returned: $?"
 
-echo "test.dat has the following content (only strings):"
-more test.dat
+DATA="test.dat"
+echo "$DATA has the following content (only strings):"
+more $DATA
 
 
 #run read_records:
@@ -27,10 +28,19 @@ $EXE
 echo "$EXE run and returned: $?"
 
 
+#run add_year
+EXE="./add_year$ARCH$2"
+$EXE
+
+echo "$EXE run and returned: $?"
+DATA="testout.dat"
+echo "$DATA has the following content (only strings):"
+more $DATA
 
 
 #delete temps
 rm test.dat
+rm testout.dat
 
 cd ..
 
