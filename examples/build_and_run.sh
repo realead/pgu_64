@@ -36,7 +36,7 @@ ld $LD_FLAG $OBJECT -o $TARGET
 
 ############ RUN ###################:
 if [ -e  $RUN_SCRIPT ] ; then
-    sh $RUN_SCRIPT $1 $TARGET
+    sh $RUN_SCRIPT $ARCH $3
 else
     ./$TARGET
     echo "$TARGET : $?"

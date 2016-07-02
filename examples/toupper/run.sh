@@ -1,12 +1,15 @@
 #all run.sh-scripts must be called with the following options:
-# $1 directory
-# $2 executable
+# $1 - architecture (optional, default 64)
+# $2 - variant (optional, default '')
 
-DIR=$1
-EXE=$2
+########## ANALISE OPTIONS ###############:
+ARCH=${1:-"64"}
 
-SRC=$DIR"/text.small"
-DEST=$DIR"/text.upper"
+EXE="toupper/toupper$ARCH$2"
+
+
+SRC="toupper/text.small"
+DEST="toupper/text.upper"
  
 $EXE $SRC $DEST
 
