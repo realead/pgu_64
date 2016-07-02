@@ -46,5 +46,9 @@ echo "building target <add_year>..."
 FILES_YEAR="add_year read_record write_record"
 build_target add_year "$FILES_YEAR"
 
+#add_year_error_handled:
+echo "building target <add_year_error_handled>..."
+FILES_YEAR_WITH_ERROR="add_year_error_handled count_chars read_record write_newline write_record error_exit"
+build_target add_year_error_handled "$FILES_YEAR_WITH_ERROR"
 
 

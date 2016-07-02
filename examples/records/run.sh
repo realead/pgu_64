@@ -42,6 +42,17 @@ more $DATA
 rm test.dat
 rm testout.dat
 
+#run add_year_error_handled
+
+EXE="./add_year_error_handled$ARCH$2"
+echo "$EXE should exit gracefully with an error message:"
+$EXE
+echo "$EXE run and returned: $?"
+
+if [ -e testout.dat ] ; then
+    echo "Error! testout.dat should not exist but does!"
+fi
+
 cd ..
 
 

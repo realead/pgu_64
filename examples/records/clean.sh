@@ -12,7 +12,7 @@ TARGET2="$DIR/write_records$ARCH$2"
  
 rm records/*.o
 
-TARGETS="write_records read_records add_year"
+TARGETS="write_records read_records add_year add_year_error_handled"
 
 for target in $TARGETS
 do
