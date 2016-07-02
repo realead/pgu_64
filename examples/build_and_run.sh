@@ -31,7 +31,7 @@ else
         LD_FLAG="-melf_x86_64"
     fi    
      
-    as --$ARCH $SOURCE -o $OBJECT
+    as --$ARCH $SOURCE -Iincludes -o $OBJECT
     ld $LD_FLAG $OBJECT -o $TARGET
 
         
