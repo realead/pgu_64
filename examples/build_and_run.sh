@@ -14,6 +14,8 @@ TARGET=$1/$1$ARCH$3
 SOURCE=$TARGET.s
 OBJECT=$TARGET.o
 
+RUN_SCRIPT="$1/run.sh"
+
    
 ########### BUILD ####################:
 
@@ -31,9 +33,14 @@ ld $LD_FLAG $OBJECT -o $TARGET
 # another possibility:
 #gcc -nostdlib -m$ARCH $SOURCE -o $TARGET 
 
+
 ############ RUN ###################:
-./$TARGET
-echo "$TARGET : $?"
+if [ -e  $RUN_SCRIPT ] ; then
+    sh $RUN_SCRIPT $1 $TARGET
+else
+    ./$TARGET
+    echo "$TARGET : $?"
+fi
 
 
 ############## CLEAN UP ########################:
