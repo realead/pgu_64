@@ -1,5 +1,9 @@
 #64bit
 
+#HANDLES ERROR IF INPUT FILE NOT FOUND
+
+#Attention: not an abi conform passage of parameters (via stack)
+
 .include "linux64.s"
 .include "record_def.s"
 
@@ -26,8 +30,27 @@ _start:
     movq  $0666, %rdx            #
     syscall  
     movq  %rax, ST_INPUT_DESCRIPTOR(%rbp)
+
+    #This will test and see if %eax is
+    #negative.  If it is not negative, it
+    #will jump to continue_processing.
+    #Otherwise it will handle the error
+    #condition that the negative number
+    #represents.
+    cmpq  $0, %rax
+    jge    continue_processing
+    #Send the error
+.section .data
+no_open_file_code:
+    .ascii "0001: \0"
+no_open_file_msg:
+    .ascii "Can’t Open Input File\0"
+.section .text
+    pushq $no_open_file_msg
+    pushq $no_open_file_code
+    call  error_exit
     
-    
+continue_processing:        
     #Open file for writing
     movq  $SYS_OPEN, %rax
     movq  $output_file_name, %rdi
@@ -39,10 +62,10 @@ _start:
     
     
 loop_begin:
-    movq ST_INPUT_DESCRIPTOR(%rbp), %rdi
-    movq $record_buffer, %rsi
+    pushq ST_INPUT_DESCRIPTOR(%rbp)
+    pushq $record_buffer
     call  read_record
-    
+    addq  $16, %rsp
     #Returns the number of bytes read.
     #If it isn’t the same number we
     #requested, then it’s either an
@@ -53,10 +76,10 @@ loop_begin:
     #Increment the age
     incq  record_buffer + RECORD_AGE
     #Write the record out
-    movq ST_OUTPUT_DESCRIPTOR(%rbp), %rdi
-    movq $record_buffer, %rsi
+    pushq ST_OUTPUT_DESCRIPTOR(%rbp)
+    pushq $record_buffer
     call  write_record
-    
+    addq $16, %rsp
     jmp   loop_begin
     
     

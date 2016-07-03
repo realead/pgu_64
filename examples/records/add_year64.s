@@ -1,3 +1,5 @@
+#64bit
+
 .include "linux64.s"
 .include "record_def.s"
 
@@ -37,10 +39,10 @@ _start:
     
     
 loop_begin:
-    pushq ST_INPUT_DESCRIPTOR(%rbp)
-    pushq $record_buffer
+    movq ST_INPUT_DESCRIPTOR(%rbp), %rdi
+    movq $record_buffer, %rsi
     call  read_record
-    addq  $16, %rsp
+    
     #Returns the number of bytes read.
     #If it isn’t the same number we
     #requested, then it’s either an
@@ -51,10 +53,10 @@ loop_begin:
     #Increment the age
     incq  record_buffer + RECORD_AGE
     #Write the record out
-    pushq ST_OUTPUT_DESCRIPTOR(%rbp)
-    pushq $record_buffer
+    movq ST_OUTPUT_DESCRIPTOR(%rbp), %rdi
+    movq $record_buffer, %rsi
     call  write_record
-    addq $16, %rsp
+    
     jmp   loop_begin
     
     

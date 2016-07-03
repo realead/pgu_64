@@ -1,5 +1,7 @@
 #64bit
 
+#ATTENTION: not abi conform calling convention used!
+
 
 .include "linux64.s"
 .include "record_def.s"
@@ -82,19 +84,20 @@ _start:
     movq  %rax, ST_FILE_DESCRIPTOR(%rbp)
     
     #Write the first record
-    movq ST_FILE_DESCRIPTOR(%rbp), %rdi
-    movq $record1, %rsi
+    pushq ST_FILE_DESCRIPTOR(%rbp)
+    pushq $record1
     call  write_record
-    
+    addq  $16, %rsp
     #Write the second record
-    movq ST_FILE_DESCRIPTOR(%rbp), %rdi
-    movq $record2, %rsi
+    pushq ST_FILE_DESCRIPTOR(%rbp)
+    pushq $record2
     call  write_record
-    
+    addq  $16, %rsp
     #Write the third record
-    movq ST_FILE_DESCRIPTOR(%rbp), %rdi
-    movq $record1, %rsi
+    pushq ST_FILE_DESCRIPTOR(%rbp)
+    pushq $record3
     call  write_record
+    addq  $16, %rsp
     
     #Close the file descriptor
     movq  $SYS_CLOSE, %rax

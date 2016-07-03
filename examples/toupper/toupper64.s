@@ -1,6 +1,6 @@
 #64bit version
 
-#ATTENTION: this is not x86-64 abi conform; see toupper64.s for an abi conform call of convert_to_upper, however it is not a global symbol and thus can not be used from outside  
+#ATTENTION: this is x86-64 as parameter passed via registers to convert_to_upper
 
 
 #changes compared to 32bit:
@@ -120,11 +120,11 @@ read_loop_begin:
     
     continue_read_loop:
 ###CONVERT THE BLOCK TO UPPER CASE###
-    pushq $BUFFER_DATA     #location of buffer
-    pushq %rax             #size of the buffer
+    movq $BUFFER_DATA, %rdi    #location of buffer
+    movq %rax, %rsi            #size of the buffer
+    pushq %rax                 #save current rax
     call  convert_to_upper
     popq  %rax             #get the size back
-    addq  $4, %rsp         #restore %rsp
     
 ###WRITE THE BLOCK OUT TO THE OUTPUT FILE###
     #size of the buffer
@@ -186,11 +186,11 @@ end_loop:
     .equ  ST_BUFFER_LEN, 16 #Length of buffer
     .equ  ST_BUFFER, 24    #actual buffer
 convert_to_upper:
-    pushq %rbp
-    movq  %rsp, %rbp
+    # not needed: pushq %rbp 
+    # not needed: movq  %rsp, %rbp
 ###SET UP VARIABLES###
-    movq  ST_BUFFER(%rbp), %rax
-    movq  ST_BUFFER_LEN(%rbp), %rbx
+    movq  %rdi, %rax
+    movq  %rsi, %rbx
     movq  $0, %rdi
     #if a buffer with zero length was given
     #to us, just leave
@@ -217,8 +217,8 @@ next_byte:
     jne   convert_loop
 end_convert_loop:
 #no return value, just leave
-    movq  %rbp, %rsp
-    popq  %rbp
+    #not needed: movq  %rbp, %rsp
+    #not needed: popq  %rbp
     ret
     
     

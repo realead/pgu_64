@@ -38,10 +38,10 @@ _start:
     movq  $STDOUT, ST_OUTPUT_DESCRIPTOR(%rbp)
     
 record_read_loop:
-    movq ST_INPUT_DESCRIPTOR(%rbp), %rdi
-    movq $record_buffer, %rsi
+    pushq ST_INPUT_DESCRIPTOR(%rbp)
+    pushq $record_buffer
     call  read_record
-    
+    addq  $16, %rsp
     #Returns the number of bytes read.
     #If it isn’t the same number we
     #requested, then it’s either an
@@ -51,18 +51,18 @@ record_read_loop:
     jne   finished_reading
     #Otherwise, print out the first name
     #but first, we must know it’s size
-    movq    $RECORD_FIRSTNAME + record_buffer, %rdi
+    pushq  $RECORD_FIRSTNAME + record_buffer
     call   count_chars
-    
+    addq   $8, %rsp
     movq   %rax, %rdx                       #remember the size of the message
     movq   $SYS_WRITE, %rax                 #write
     movq   ST_OUTPUT_DESCRIPTOR(%rbp), %rdi #to this file
     movq   $RECORD_FIRSTNAME + record_buffer, %rsi #this message
     syscall
     
-    movq  ST_OUTPUT_DESCRIPTOR(%rbp), %rsi
+    pushq  ST_OUTPUT_DESCRIPTOR(%rbp)
     call   write_newline
-    
+    addq   $8, %rsp
     jmp    record_read_loop
     
 finished_reading:

@@ -1,46 +1,42 @@
 #64bit
 
-# Attention: not abi conform as
 .include "linux64.s"
 
-    .equ ST_ERROR_CODE, 16
-    .equ ST_ERROR_MSG, 24
+# rdi-> ST_ERROR_CODE
+# rsi-> equ ST_ERROR_MSG
     
 .globl error_exit
     .type error_exit, @function
 error_exit:
-    pushq %rbp
-    movq  %rsp, %rbp
     
     #Write out error code
-    movq  ST_ERROR_CODE(%rbp), %rcx
-    pushq %rcx
-    call  count_chars
-    popq  %rcx
+    pushq %rsi
+    pushq %rdi
     
+    #rdi already set
+    call  count_chars
+    #result in rax
     
     movq  %rax, %rdx                #remember length
     movq  $SYS_WRITE, %rax          #write
     movq  $STDERR, %rdi             #to stderr
-    movq  ST_ERROR_CODE(%rbp), %rsi #error code buffer
+    popq  %rsi                      #error code buffer (error code was on top)
                                     #length already set
     syscall
     
     #Write out error message
-    movq  ST_ERROR_MSG(%rbp), %rcx
-    pushq %rcx
+    movq  (%rsp), %rdi #now second argument is on the top
     call  count_chars
-    popq  %rcx
     
     
     movq  %rax, %rdx                #remember length
     movq  $SYS_WRITE, %rax          #write
     movq  $STDERR, %rdi             #to stderr
-    movq  ST_ERROR_MSG(%rbp), %rsi  #error message buffer
+    popq  %rsi                      #error message buffer (message was on the top)
                                     #length already set
     syscall
     
-    pushq $STDERR
+    movq $STDERR, %rdi
     call  write_newline
     
     #Exit with status 1
