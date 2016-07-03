@@ -22,6 +22,7 @@ _start:
     movq $name, %rsi          #This is the first %s
     movq $personstring, %rdx  #This is the second %s
     movq numberloved, %rcx   #This is the %d
+    movq $0, %rax             #no vector registers used (abi requirement of x86-64)
     #in the prototype
     call  printf
     
