@@ -62,7 +62,6 @@ message_free:
 #functions (specifically, this sets heap_begin and
 #current_break). This has no parameters and no
 #return value.
-    .globl allocate_init
     .type allocate_init,@function
 allocate_init:
     leaq message_ini(%rip), %rdi
@@ -130,7 +129,7 @@ malloc:
     
     #init needed!
     pushq %rdi
-    call allocate_init@PLT
+    call allocate_init  #because this function is local (has no .globl allocate_init), no @PLT needed
     popq %rdi
     
 no_init: 
