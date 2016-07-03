@@ -6,6 +6,7 @@
     .equ SYS_OPEN, 2
     .equ SYS_CLOSE, 3
     .equ SYS_EXIT, 60
+    .equ SYS_BRK, 12
 
     .equ O_RDONLY, 0
     .equ O_CREAT_WRONLY_TRUNC, 03101
