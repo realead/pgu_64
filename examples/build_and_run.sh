@@ -45,7 +45,7 @@ if [ -e  $RUN_SCRIPT ] ; then
     sh $RUN_SCRIPT $ARCH $3
 else
     ./$TARGET
-    echo "$TARGET : $?"
+    echo "$TARGET run with exit code: $?"
 fi
 
 
