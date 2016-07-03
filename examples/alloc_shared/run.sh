@@ -8,8 +8,11 @@ ARCH=${1:-"64"}
 
 EXE="./alloc_shared$ARCH$2"
 
+echo "Watch out for debug info of malloc and free..."
 LD_PRELOAD=./libmyalloc$ARCH$2.so $EXE
 
+
+echo "$EXE run and returned: $?"
 
 cd ..
 

@@ -13,6 +13,8 @@ int main(){
     
     free(res2);
     free(res);
+    
+    return 0;
 }
 
 
