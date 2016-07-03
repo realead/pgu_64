@@ -7,7 +7,7 @@
 # $1 - architecture (optional, default 64)
 # $2 - variant (optional, default '')
 
-ALL="exit maximum power factorial toupper records hello_world_nolib hello_world_lib printf_example records_shared"
+ALL="exit maximum power factorial toupper records hello_world_nolib hello_world_lib printf_example records_shared alloc"
 
 for test_case in $ALL
 do
