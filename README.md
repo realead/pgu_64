@@ -51,6 +51,7 @@ only *add_year_error_handled*.
 Additional things to consider:
    1. Using *printf*, the abi demands, that for function with variable number of arguments (*printf* is one of them), the number of used vector registers is passed in *%al* (which was not the case for x86).
    2. In example *records_shared*, the files with local data (*write_newline*, *error_exit*) are not in the shared library, because for x86-64 position indipendent code (PIC) is needed for shared libraries. This issue is handled in example *alloc_shared*.
+   3. Be aware, that when using clib-`printf` also clib-`exit` must be used. See also http://stackoverflow.com/questions/38379553/using-printf-in-assembly-leads-to-an-empty-ouput
 
 You might need to install *gcc-multilib* to run shared examples. See trooubleshooting section for more information.
 
