@@ -5,7 +5,7 @@ Programming Ground Up for x86-64 architecture
 
 "Programming Ground Up" (http://nongnu.askapache.com/pgubook/ProgrammingGroundUp-1-0-booksize.pdf) is a great source for starting out assembler programming. However its code is for x86. This project migrates the programs from this book to x86-64 architecture.
 
-So this projects translates the programs from the book to x86-64 architecture.
+"Programming under the hood" (https://github.com/johnnyb/programming_under_the_hood) is a follow-up from the same author, which also touches the x86-64 architecture.
 
 ### Infrastructure
 
